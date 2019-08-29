@@ -27,7 +27,6 @@ switch (command) {
         break;
 };
 
-
 // Function for concert search
 // function concert() {
 //     var 
@@ -57,11 +56,45 @@ function searchSpotify() {
 function movieSearch() {
     if (!input) {
         input = "Mr. Nobody";
-        limit = 5;
     }
     console.log("==========================\nHere's your movie info!")
     axios.get("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy")
     .then(function (response) {
-            console.log("Movie Title: " + response.data.Title + "\nYear Released: " + response.data.Year + "\nIMBD Rating: " + response.data.imdbRating + "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value + "\nCountry: " + response.data.Country + "\nLanguages: " + response.data.Language + "\nPlot: " + response.data.Plot + "\nActors: " + response.data.Actors);
-        });
+        console.log("Movie Title: " + response.data.Title + "\nYear Released: " + response.data.Year + "\nIMBD Rating: " + response.data.imdbRating + "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value + "\nCountry: " + response.data.Country + "\nLanguages: " + response.data.Language + "\nPlot: " + response.data.Plot + "\nActors: " + response.data.Actors);
+    });
 };
+
+// Function for Do What It Says
+function doWork() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        };
+        console.log(data);
+
+        var dataArr = data.split(", ");
+        console.log(dataArr[0]);
+        console.log(dataArr[1]);
+
+        command = dataArr[0];
+        input = dataArr[1];
+
+        switch (command) {
+            case "concert-this":
+                concert();
+                break;
+
+            case "spotify-this-song":
+                searchSpotify();
+                break;
+
+            case "movie-this":
+                movieSearch();
+                break;
+
+            case "do-what-it-says":
+                doWork();
+                break;
+        };
+    });
+}
