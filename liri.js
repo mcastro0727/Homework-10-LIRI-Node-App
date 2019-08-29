@@ -11,7 +11,7 @@ var input = process.argv.slice(3).join(" ");
 
 switch (command) {
     case "concert-this":
-        concert();
+        concertSearch();
         break;
 
     case "spotify-this-song":
@@ -28,10 +28,14 @@ switch (command) {
 };
 
 // Function for concert search
-// function concert() {
-//     var 
-// }
-
+function concertSearch() {
+    console.log("==========================\nHere's your concert info!")
+    axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
+    .then(function (response) {
+        console.log("Name of Venue: " + response.data.venue[0] + "\nVenue Location: " + response.data.venue[3] + "\nDate of Event: " + response.data.datetime);
+    });
+ 
+};
 
 // Function for Spotify search
 function searchSpotify() {
