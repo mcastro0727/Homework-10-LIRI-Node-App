@@ -12,20 +12,20 @@ var input = process.argv.slice(3).join(" ");
 switch (command) {
     case "concert-this":
         concert();
-    break;
+        break;
 
     case "spotify-this-song":
         searchSpotify();
-    break;
+        break;
 
     case "movie-this":
-        movie();
-    break;
+        movieSearch();
+        break;
 
     case "do-what-it-says":
         doWork();
-    break;
-}
+        break;
+};
 
 
 // Function for concert search
@@ -41,13 +41,27 @@ function searchSpotify() {
         limit = 5;
     }
     console.log("==========================\nHere's your song info!")
-    spotify.search({ type: 'track', query: input }, function(err, data) {
+    spotify.search({
+        type: 'track',
+        query: input
+    }, function (err, data) {
         if (err) {
-          return console.log("Error occurred: " + err);
+            return console.log("Error occurred: " + err);
         }
         var songs = data.tracks.items;
-      console.log("Artist: " + songs[0].artists[0].name + "\nSong Name: " + songs[0].name + "\nPreview URL: " + songs[0].preview_url + "\nAlbum: " + songs[0].album.name) 
-      });
-}
+        console.log("Artist: " + songs[0].artists[0].name + "\nSong Name: " + songs[0].name + "\nPreview URL: " + songs[0].preview_url + "\nAlbum: " + songs[0].album.name)
+    });
+};
 
-
+// Function for Movie search
+function movieSearch() {
+    if (!input) {
+        input = "Mr. Nobody";
+        limit = 5;
+    }
+    console.log("==========================\nHere's your movie info!")
+    axios.get("http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy")
+    .then(function (response) {
+            console.log("Movie Title: " + response.data.Title + "\nYear Released: " + response.data.Year + "\nIMBD Rating: " + response.data.imdbRating + "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value + "\nCountry: " + response.data.Country + "\nLanguages: " + response.data.Language + "\nPlot: " + response.data.Plot + "\nActors: " + response.data.Actors);
+        });
+};
